@@ -1,4 +1,4 @@
-# Xeno CRM Assignment — AI-Native Customer Engagement Platform
+# CRM — AI-Native Customer Engagement Platform
 
 This repository contains the Xeno CRM take-home assignment for the FDE Internship Drive 2026.
 It is organized as a full-stack demo product with a clean frontend, Python backend, multi-agent AI service, and simulated channel delivery service.
