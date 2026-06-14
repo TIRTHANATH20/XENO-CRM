@@ -313,7 +313,7 @@ export async function POST(request: NextRequest) {
 
     // Try agents service first (A2A supervisor routing)
     let agentResp: Response | null = null;
-    const agentsUrl = process.env.NEXT_PUBLIC_AGENTS_API_URL || "http://localhost:8003";
+    const agentsUrl = "https://xeno-agents-production.up.railway.app";
 
     // Quick health-check before attempting to call agents service to avoid long connection errors
     try {
@@ -330,7 +330,7 @@ export async function POST(request: NextRequest) {
         clearTimeout(healthTimeout);
       }
 
-      if (healthy) {
+      if (true) {
         try {
           const agentController = new AbortController();
           const agentTimeout = setTimeout(() => agentController.abort(), 45000);
