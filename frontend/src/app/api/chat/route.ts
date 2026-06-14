@@ -318,7 +318,7 @@ export async function POST(request: NextRequest) {
     // Quick health-check before attempting to call agents service to avoid long connection errors
     try {
       const healthController = new AbortController();
-      const healthTimeout = setTimeout(() => healthController.abort(), 1200);
+      const healthTimeout = setTimeout(() => healthController.abort(), 5000);
       let healthy = false;
       try {
         const h = await fetch(`${agentsUrl}/health`, { method: "GET", signal: healthController.signal });
@@ -333,7 +333,7 @@ export async function POST(request: NextRequest) {
       if (healthy) {
         try {
           const agentController = new AbortController();
-          const agentTimeout = setTimeout(() => agentController.abort(), 8000);
+          const agentTimeout = setTimeout(() => agentController.abort(), 45000);
           try {
             agentResp = await fetch(`${agentsUrl}/api/chat`, {
               method: "POST",
@@ -514,3 +514,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+export const maxDuration = 60;
