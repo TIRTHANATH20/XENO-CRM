@@ -21,4 +21,4 @@ llm = ChatGroq(model="llama-3.1-8b-instant", temperature=settings.temperature, a
 tools = [ask_db, create_campaign, send_campaign]
 memory = MemorySaver()
 
-campaign_agent = create_react_agent(llm.bind_tools(tools), tools=tools, checkpointer=memory)
+campaign_agent = create_react_agent(llm, tools=tools, checkpointer=memory)
