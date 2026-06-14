@@ -134,8 +134,8 @@ def build_messages_from_context(context: Optional[list[dict]]) -> list[BaseMessa
         return []
     messages: list[BaseMessage] = []
     for item in context:
-        role = item.get("role")
-        content = item.get("content", "")
+        role = (item if isinstance(item, dict) else {}).get("role")
+        content = (item if isinstance(item, dict) else {}).get("content", "")
         if role == "user":
             messages.append(HumanMessage(content=content))
         elif role == "assistant":
@@ -156,7 +156,7 @@ def invoke_supervisor(user_input: str, thread_id: Optional[str] = None, context:
     last = result["messages"][-1]
     return {
         "response": last.content,
-        "agent": last.additional_kwargs.get("agent", "unknown"),
-        "agents": last.additional_kwargs.get("agents", []),
+        "agent": (getattr(last, "additional_kwargs", {}) if isinstance(getattr(last, "additional_kwargs", {}), dict) else {}).get("agent", "unknown"),
+        "agents": (getattr(last, "additional_kwargs", {}) if isinstance(getattr(last, "additional_kwargs", {}), dict) else {}).get("agents", []),
         "thread_id": thread_id,
     }
