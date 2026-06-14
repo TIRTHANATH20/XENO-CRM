@@ -11,12 +11,12 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict
 
-from agents.agents.campaign_agent import campaign_agent, persona as campaign_persona
-from agents.agents.content_agent import content_agent, persona as content_persona
-from agents.agents.data_agent import data_agent, persona as data_persona
-from agents.agents.insights_agent import insights_agent, persona as insights_persona
-from agents.agents.segmentation_agent import segmentation_agent, persona as segmentation_persona
-from agents.config import settings
+from agents.campaign_agent import campaign_agent, persona as campaign_persona
+from agents.content_agent import content_agent, persona as content_persona
+from agents.data_agent import data_agent, persona as data_persona
+from agents.insights_agent import insights_agent, persona as insights_persona
+from agents.segmentation_agent import segmentation_agent, persona as segmentation_persona
+from config import settings
 
 AGENTS = {
     "data": (data_agent, data_persona, "Shopper data & CRM state queries"),

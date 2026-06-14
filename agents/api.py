@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from agents.supervisor import AGENTS, invoke_supervisor
+from supervisor import AGENTS, invoke_supervisor
 
 app = FastAPI(
     title="Xeno Agent Orchestrator",

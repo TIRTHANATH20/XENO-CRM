@@ -3,8 +3,8 @@ from langchain_groq import ChatGroq
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 
-from agents.config import settings
-from agents.tools.crm_tools import ask_db, get_campaign_performance, get_dashboard_stats
+from config import settings
+from tools.crm_tools import ask_db, get_campaign_performance, get_dashboard_stats
 
 persona = SystemMessage(
     content=(

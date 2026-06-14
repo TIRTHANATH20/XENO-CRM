@@ -4,7 +4,7 @@ from typing import Any
 import httpx
 from langchain_core.tools import tool
 
-from agents.config import settings
+from config import settings
 
 BASE = settings.crm_api_url
 

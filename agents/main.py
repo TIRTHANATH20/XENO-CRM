@@ -4,7 +4,7 @@ Run: python -m agents.main
 """
 from langchain_core.messages import HumanMessage
 
-from agents.supervisor import AGENTS, invoke_supervisor
+from supervisor import AGENTS, invoke_supervisor
 
 
 if __name__ == "__main__":

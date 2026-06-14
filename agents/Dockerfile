@@ -1,10 +1,10 @@
 FROM python:3.11-slim
 WORKDIR /app/agents
 
-COPY agents/requirements.txt ./
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY agents/ ./
+COPY . ./
 
 ENV PYTHONPATH=/app/agents
 ENV PORT=8001
