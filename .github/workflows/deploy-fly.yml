@@ -15,9 +15,9 @@ jobs:
 
       - name: Install flyctl
         run: |
-          wget -q https://github.com/superfly/flyctl/releases/download/v0.2.70/flyctl_0.2.70_Linux_x86_64.tar.gz
-          tar xzf flyctl_0.2.70_Linux_x86_64.tar.gz
-          sudo mv flyctl /usr/local/bin/
+          curl -L https://fly.io/install.sh | bash
+          export PATH="/root/.fly/bin:$PATH"
+          echo "/root/.fly/bin" >> $GITHUB_PATH
           flyctl version
 
       - name: Deploy backend
