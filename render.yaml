@@ -1,0 +1,27 @@
+# Render YAML manifest for deploying backend and agents services
+# Replace placeholders and add secrets in Render dashboard after connecting the repo.
+
+services:
+  - type: web
+    name: xeno-backend
+    env: python
+    region: oregon
+    branch: main
+    path: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+
+  - type: web
+    name: xeno-agents
+    env: python
+    region: oregon
+    branch: main
+    path: agents
+    buildCommand: pip install -r requirements.txt
+    startCommand: PYTHONPATH=. uvicorn api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+
+# Notes:
+# - Do NOT put secrets here. Add GROQ_API_KEY and other secrets in Render's dashboard for each service.
+# - After adding this file to your repo, connect the repo in Render and import this manifest to create the services.
