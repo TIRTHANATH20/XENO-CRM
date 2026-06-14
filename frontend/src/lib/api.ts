@@ -1,4 +1,4 @@
-const CRM_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "http://localhost:8001";
+const CRM_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "http://localhost:8000";
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
 const CRM_READ_TIMEOUT_MS = 2000;
 const CRM_ACTION_TIMEOUT_MS = 12000;

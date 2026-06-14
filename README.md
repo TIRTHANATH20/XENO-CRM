@@ -106,6 +106,34 @@ This project is designed for deployment as a split frontend/backend app:
 - AI/agent service can be deployed separately or run alongside the backend
 - Channel service is a simulator and should run as a separate service if needed
 
+### Deploy frontend to Vercel (recommended)
+
+1. Install Vercel CLI (optional, you can also use the web UI):
+
+```bash
+npm i -g vercel
+```
+
+2. From the `frontend/` folder, link or create a Vercel project and deploy:
+
+```bash
+cd frontend
+vercel login
+vercel link   # connect to an existing project or create a new one
+vercel --prod
+```
+
+3. Set required environment variables in the Vercel dashboard (Project → Settings → Environment Variables):
+
+- `NEXT_PUBLIC_CRM_API_URL` — set to your backend URL (e.g. `https://your-backend.example.com`)
+- `NEXT_PUBLIC_AGENTS_API_URL` — set to your agents service URL if deployed (optional)
+- `GROQ_API_KEY` — **server-side** Groq key (only set this if you want Groq fallback in `api/chat`)
+
+Notes:
+
+- The `GROQ_API_KEY` is a secret and should be set in Vercel's dashboard as a Project Secret (do NOT commit it to the repo).
+- If your backend and agents are not deployed, some AI features will fall back to the local agent service when run locally; for a fully hosted demo you should deploy backend and agents as well.
+
 ### Important deployment rule
 
 **Do not commit secrets to GitHub.**

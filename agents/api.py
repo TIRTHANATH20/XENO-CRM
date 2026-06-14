@@ -25,7 +25,7 @@ from typing import Optional
 
 class ChatRequest(BaseModel):
     message: str
-    thread_id: str = "xeno_session_1"
+    thread_id: Optional[str] = None
     context: Optional[dict] = None
 
 

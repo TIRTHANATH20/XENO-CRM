@@ -1,12 +1,12 @@
 FROM python:3.11-slim
 WORKDIR /app
 
-COPY backend/requirements.txt ./
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ ./backend/
+COPY . ./
 
-ENV PYTHONPATH=/app/backend
+ENV PYTHONPATH=/app
 ENV PORT=8000
 EXPOSE 8000
 
