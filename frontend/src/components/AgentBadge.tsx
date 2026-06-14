@@ -1,24 +1,19 @@
-import { cn, AGENT_COLORS } from "@/lib/utils";
+import React from 'react';
 
 const AGENT_LABELS: Record<string, string> = {
-  supervisor: "Supervisor",
-  segmentation: "Segmentation",
-  content: "Content",
-  campaign: "Campaign",
-  insights: "Insights",
-  data: "Data",
+  supervisor: 'Supervisor',
+  content: 'Content Specialist',
+  segmentation: 'Segmentation',
+  campaign: 'Campaigns',
+  insights: 'Insights'
 };
 
-function labelForAgent(agent: string) {
-  return AGENT_LABELS[agent] || agent.replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-export function AgentBadge({ agent }: { agent: string }) {
-  const color = AGENT_COLORS[agent] || AGENT_COLORS.supervisor;
+export const AgentBadge: React.FC<{ agent?: string }> = ({ agent }) => {
+  const safeAgent = agent || 'supervisor';
   return (
-    <span className={cn("agent-badge border", color)}>
-      <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse-soft" />
-      {labelForAgent(agent)} agent
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-coffee-dark text-coffee-light border border-coffee-muted/20">
+      via {AGENT_LABELS[safeAgent] || String(safeAgent).replace(/\b\w/g, (c) => c.toUpperCase())}
     </span>
   );
-}
+};
+export default AgentBadge;
