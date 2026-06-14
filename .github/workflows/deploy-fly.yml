@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,22 +20,22 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl deploy --config backend/fly.toml --remote-only --app xeno-backend
+          flyctl deploy --config backend/fly.toml --app xeno-backend
 
       - name: Deploy agents
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl deploy --config agents/fly.toml --remote-only --app xeno-agents
+          flyctl deploy --config agents/fly.toml --app xeno-agents
 
       - name: Deploy channel-service
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl deploy --config channel-service/fly.toml --remote-only --app xeno-channel-service
+          flyctl deploy --config channel-service/fly.toml --app xeno-channel-service
 
       - name: Deploy frontend
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl deploy --config frontend/fly.toml --remote-only --app xeno-frontend
+          flyctl deploy --config frontend/fly.toml --app xeno-frontend
