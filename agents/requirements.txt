@@ -1,0 +1,10 @@
+langchain-groq==0.2.3
+langchain-core==0.3.83
+langgraph==0.2.60
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+httpx==0.28.1
+pydantic==2.10.3
+pydantic-settings==2.7.0
+python-multipart==0.0.20
+pytest==8.4.0

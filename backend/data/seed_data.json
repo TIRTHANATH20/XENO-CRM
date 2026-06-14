@@ -1,0 +1,623 @@
+{
+  "brand": "Coffee House",
+  "customers": [
+    {
+      "name": "Priya Sharma",
+      "email": "priya.sharma@brew-bloom.com",
+      "phone": "+91-9876543210",
+      "city": "Mumbai",
+      "country": "India",
+      "signup_date": "2026-01-18T09:30:00",
+      "preferred_channel": "whatsapp",
+      "tags": [
+        "loyal",
+        "coffee"
+      ]
+    },
+    {
+      "name": "Arjun Mehta",
+      "email": "arjun.mehta@brew-bloom.com",
+      "phone": "+91-9876543211",
+      "city": "Delhi",
+      "country": "India",
+      "signup_date": "2026-04-02T14:20:00",
+      "preferred_channel": "sms",
+      "tags": [
+        "new"
+      ]
+    },
+    {
+      "name": "Sneha Reddy",
+      "email": "sneha.reddy@brew-bloom.com",
+      "phone": "+91-9876543212",
+      "city": "Bangalore",
+      "country": "India",
+      "signup_date": "2026-02-20T11:55:00",
+      "preferred_channel": "email",
+      "tags": [
+        "loyal",
+        "premium"
+      ]
+    },
+    {
+      "name": "Rahul Kapoor",
+      "email": "rahul.kapoor@brew-bloom.com",
+      "phone": "+91-9876543213",
+      "city": "Mumbai",
+      "country": "India",
+      "signup_date": "2025-10-08T08:50:00",
+      "preferred_channel": "whatsapp",
+      "tags": [
+        "churned"
+      ]
+    },
+    {
+      "name": "Ananya Iyer",
+      "email": "ananya.iyer@brew-bloom.com",
+      "phone": "+91-9876543214",
+      "city": "Chennai",
+      "country": "India",
+      "signup_date": "2026-03-04T17:10:00",
+      "preferred_channel": "email",
+      "tags": [
+        "loyal"
+      ]
+    },
+    {
+      "name": "Vikram Singh",
+      "email": "vikram.singh@brew-bloom.com",
+      "phone": "+91-9876543215",
+      "city": "Pune",
+      "country": "India",
+      "signup_date": "2026-05-27T12:05:00",
+      "preferred_channel": "rcs",
+      "tags": [
+        "new"
+      ]
+    },
+    {
+      "name": "Meera Patel",
+      "email": "meera.patel@brew-bloom.com",
+      "phone": "+91-9876543216",
+      "city": "Ahmedabad",
+      "country": "India",
+      "signup_date": "2025-11-30T16:45:00",
+      "preferred_channel": "whatsapp",
+      "tags": [
+        "premium",
+        "coffee"
+      ]
+    },
+    {
+      "name": "Karan Joshi",
+      "email": "karan.joshi@brew-bloom.com",
+      "phone": "+91-9876543217",
+      "city": "Mumbai",
+      "country": "India",
+      "signup_date": "2026-03-25T10:15:00",
+      "preferred_channel": "sms",
+      "tags": [
+        "loyal"
+      ]
+    },
+    {
+      "name": "Divya Nair",
+      "email": "divya.nair@brew-bloom.com",
+      "phone": "+91-9876543218",
+      "city": "Kochi",
+      "country": "India",
+      "signup_date": "2025-12-14T09:10:00",
+      "preferred_channel": "email",
+      "tags": [
+        "inactive"
+      ]
+    },
+    {
+      "name": "Rohan Das",
+      "email": "rohan.das@brew-bloom.com",
+      "phone": "+91-9876543219",
+      "city": "Kolkata",
+      "country": "India",
+      "signup_date": "2026-02-05T13:35:00",
+      "preferred_channel": "whatsapp",
+      "tags": [
+        "loyal",
+        "coffee"
+      ]
+    },
+    {
+      "name": "Isha Gupta",
+      "email": "isha.gupta@brew-bloom.com",
+      "phone": "+91-9876543220",
+      "city": "Jaipur",
+      "country": "India",
+      "signup_date": "2026-05-01T15:00:00",
+      "preferred_channel": "email",
+      "tags": [
+        "new"
+      ]
+    },
+    {
+      "name": "Aditya Verma",
+      "email": "aditya.verma@brew-bloom.com",
+      "phone": "+91-9876543221",
+      "city": "Delhi",
+      "country": "India",
+      "signup_date": "2026-01-06T14:30:00",
+      "preferred_channel": "rcs",
+      "tags": [
+        "premium"
+      ]
+    },
+    {
+      "name": "Nisha Rao",
+      "email": "nisha.rao@brew-bloom.com",
+      "phone": "+91-9876543222",
+      "city": "Hyderabad",
+      "country": "India",
+      "signup_date": "2025-12-21T08:40:00",
+      "preferred_channel": "whatsapp",
+      "tags": [
+        "loyal"
+      ]
+    },
+    {
+      "name": "Tarun Malhotra",
+      "email": "tarun.malhotra@brew-bloom.com",
+      "phone": "+91-9876543223",
+      "city": "Chandigarh",
+      "country": "India",
+      "signup_date": "2025-11-17T12:55:00",
+      "preferred_channel": "sms",
+      "tags": [
+        "churned"
+      ]
+    },
+    {
+      "name": "Pooja Kulkarni",
+      "email": "pooja.kulkarni@brew-bloom.com",
+      "phone": "+91-9876543224",
+      "city": "Pune",
+      "country": "India",
+      "signup_date": "2026-03-18T10:20:00",
+      "preferred_channel": "email",
+      "tags": [
+        "loyal",
+        "coffee"
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "customer_email": "priya.sharma@brew-bloom.com",
+      "order_date": "2026-05-22T14:22:00",
+      "total": 850,
+      "items": [
+        {
+          "name": "Seasonal Blend Bag",
+          "price": 850,
+          "qty": 1
+        }
+      ],
+      "category": "retail"
+    },
+    {
+      "customer_email": "priya.sharma@brew-bloom.com",
+      "order_date": "2026-04-08T11:10:00",
+      "total": 450,
+      "items": [
+        {
+          "name": "Ethiopian Pour-Over",
+          "price": 450,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "priya.sharma@brew-bloom.com",
+      "order_date": "2026-03-05T09:45:00",
+      "total": 1200,
+      "items": [
+        {
+          "name": "Ceramic Mug Set",
+          "price": 1200,
+          "qty": 1
+        }
+      ],
+      "category": "retail"
+    },
+    {
+      "customer_email": "arjun.mehta@brew-bloom.com",
+      "order_date": "2026-05-29T17:12:00",
+      "total": 380,
+      "items": [
+        {
+          "name": "Matcha Latte",
+          "price": 380,
+          "qty": 1
+        }
+      ],
+      "category": "beverages"
+    },
+    {
+      "customer_email": "arjun.mehta@brew-bloom.com",
+      "order_date": "2026-05-30T09:40:00",
+      "total": 290,
+      "items": [
+        {
+          "name": "Avocado Toast",
+          "price": 290,
+          "qty": 1
+        }
+      ],
+      "category": "food"
+    },
+    {
+      "customer_email": "sneha.reddy@brew-bloom.com",
+      "order_date": "2026-06-02T08:18:00",
+      "total": 180,
+      "items": [
+        {
+          "name": "Blueberry Muffin",
+          "price": 180,
+          "qty": 1
+        }
+      ],
+      "category": "food"
+    },
+    {
+      "customer_email": "sneha.reddy@brew-bloom.com",
+      "order_date": "2026-05-21T13:22:00",
+      "total": 850,
+      "items": [
+        {
+          "name": "Seasonal Blend Bag",
+          "price": 850,
+          "qty": 1
+        }
+      ],
+      "category": "retail"
+    },
+    {
+      "customer_email": "sneha.reddy@brew-bloom.com",
+      "order_date": "2026-04-10T16:30:00",
+      "total": 350,
+      "items": [
+        {
+          "name": "Cold Brew Tonic",
+          "price": 350,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "rahul.kapoor@brew-bloom.com",
+      "order_date": "2026-01-15T10:05:00",
+      "total": 450,
+      "items": [
+        {
+          "name": "Ethiopian Pour-Over",
+          "price": 450,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "rahul.kapoor@brew-bloom.com",
+      "order_date": "2025-12-10T12:40:00",
+      "total": 1200,
+      "items": [
+        {
+          "name": "Ceramic Mug Set",
+          "price": 1200,
+          "qty": 1
+        }
+      ],
+      "category": "retail"
+    },
+    {
+      "customer_email": "ananya.iyer@brew-bloom.com",
+      "order_date": "2026-05-30T18:00:00",
+      "total": 320,
+      "items": [
+        {
+          "name": "Cold Brew Tonic",
+          "price": 320,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "vikram.singh@brew-bloom.com",
+      "order_date": "2026-06-05T07:50:00",
+      "total": 850,
+      "items": [
+        {
+          "name": "Monthly Coffee Subscription",
+          "price": 850,
+          "qty": 1
+        }
+      ],
+      "category": "subscription"
+    },
+    {
+      "customer_email": "meera.patel@brew-bloom.com",
+      "order_date": "2026-05-14T14:32:00",
+      "total": 1400,
+      "items": [
+        {
+          "name": "VIP Coffee Tasting Set",
+          "price": 1400,
+          "qty": 1
+        }
+      ],
+      "category": "premium"
+    },
+    {
+      "customer_email": "meera.patel@brew-bloom.com",
+      "order_date": "2026-04-01T09:10:00",
+      "total": 320,
+      "items": [
+        {
+          "name": "Cold Brew Tonic",
+          "price": 320,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "karan.joshi@brew-bloom.com",
+      "order_date": "2026-06-01T10:50:00",
+      "total": 60,
+      "items": [
+        {
+          "name": "Oat Milk Upgrade",
+          "price": 60,
+          "qty": 1
+        }
+      ],
+      "category": "add-on"
+    },
+    {
+      "customer_email": "karan.joshi@brew-bloom.com",
+      "order_date": "2026-05-20T10:10:00",
+      "total": 450,
+      "items": [
+        {
+          "name": "Ethiopian Pour-Over",
+          "price": 450,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "divya.nair@brew-bloom.com",
+      "order_date": "2026-02-11T15:40:00",
+      "total": 450,
+      "items": [
+        {
+          "name": "Ethiopian Pour-Over",
+          "price": 450,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "divya.nair@brew-bloom.com",
+      "order_date": "2026-01-24T13:50:00",
+      "total": 180,
+      "items": [
+        {
+          "name": "Blueberry Muffin",
+          "price": 180,
+          "qty": 1
+        }
+      ],
+      "category": "food"
+    },
+    {
+      "customer_email": "rohan.das@brew-bloom.com",
+      "order_date": "2026-05-28T11:00:00",
+      "total": 850,
+      "items": [
+        {
+          "name": "Seasonal Blend Bag",
+          "price": 850,
+          "qty": 1
+        }
+      ],
+      "category": "retail"
+    },
+    {
+      "customer_email": "rohan.das@brew-bloom.com",
+      "order_date": "2026-06-07T17:45:00",
+      "total": 320,
+      "items": [
+        {
+          "name": "Cold Brew Tonic",
+          "price": 320,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "isha.gupta@brew-bloom.com",
+      "order_date": "2026-05-30T13:10:00",
+      "total": 290,
+      "items": [
+        {
+          "name": "Avocado Toast",
+          "price": 290,
+          "qty": 1
+        }
+      ],
+      "category": "food"
+    },
+    {
+      "customer_email": "aditya.verma@brew-bloom.com",
+      "order_date": "2026-04-18T08:45:00",
+      "total": 1200,
+      "items": [
+        {
+          "name": "Ceramic Mug Set",
+          "price": 1200,
+          "qty": 1
+        }
+      ],
+      "category": "retail"
+    },
+    {
+      "customer_email": "aditya.verma@brew-bloom.com",
+      "order_date": "2026-03-24T11:25:00",
+      "total": 380,
+      "items": [
+        {
+          "name": "Matcha Latte",
+          "price": 380,
+          "qty": 1
+        }
+      ],
+      "category": "beverages"
+    },
+    {
+      "customer_email": "nisha.rao@brew-bloom.com",
+      "order_date": "2026-05-09T14:55:00",
+      "total": 850,
+      "items": [
+        {
+          "name": "Seasonal Blend Bag",
+          "price": 850,
+          "qty": 1
+        }
+      ],
+      "category": "retail"
+    },
+    {
+      "customer_email": "nisha.rao@brew-bloom.com",
+      "order_date": "2026-06-03T17:20:00",
+      "total": 60,
+      "items": [
+        {
+          "name": "Oat Milk Upgrade",
+          "price": 60,
+          "qty": 1
+        }
+      ],
+      "category": "add-on"
+    },
+    {
+      "customer_email": "tarun.malhotra@brew-bloom.com",
+      "order_date": "2026-01-10T10:10:00",
+      "total": 180,
+      "items": [
+        {
+          "name": "Blueberry Muffin",
+          "price": 180,
+          "qty": 1
+        }
+      ],
+      "category": "food"
+    },
+    {
+      "customer_email": "tarun.malhotra@brew-bloom.com",
+      "order_date": "2025-12-08T14:15:00",
+      "total": 450,
+      "items": [
+        {
+          "name": "Ethiopian Pour-Over",
+          "price": 450,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "pooja.kulkarni@brew-bloom.com",
+      "order_date": "2026-05-15T17:30:00",
+      "total": 450,
+      "items": [
+        {
+          "name": "Ethiopian Pour-Over",
+          "price": 450,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    },
+    {
+      "customer_email": "pooja.kulkarni@brew-bloom.com",
+      "order_date": "2026-06-04T12:05:00",
+      "total": 320,
+      "items": [
+        {
+          "name": "Cold Brew Tonic",
+          "price": 320,
+          "qty": 1
+        }
+      ],
+      "category": "coffee"
+    }
+  ],
+  "campaigns": [
+    {
+      "name": "High-Value Loyalists: Premium Perk",
+      "segment_name": "High-Value Loyalists",
+      "message_template": "Hi {{name}}, thank you for your loyalty. Redeem an exclusive premium blend reward on your next order.",
+      "channel": "email",
+      "status": "completed",
+      "sent_count": 10,
+      "delivered_count": 10,
+      "opened_count": 8,
+      "clicked_count": 4,
+      "converted_count": 2,
+      "failed_count": 0
+    },
+    {
+      "name": "Win-Back: Churned Espresso Offer",
+      "segment_name": "Win-Back: Churned",
+      "message_template": "Hi {{name}}, we miss your mornings. Get a fresh espresso on us when you return this week.",
+      "channel": "whatsapp",
+      "status": "completed",
+      "sent_count": 2,
+      "delivered_count": 2,
+      "opened_count": 2,
+      "clicked_count": 1,
+      "converted_count": 1,
+      "failed_count": 0
+    },
+    {
+      "name": "Coffee Enthusiasts: New Roast Preview",
+      "segment_name": "Coffee Enthusiasts",
+      "message_template": "Hi {{name}}, be the first to taste our limited roast preview—reserve your sample today.",
+      "channel": "sms",
+      "status": "draft",
+      "sent_count": 5,
+      "delivered_count": 5,
+      "opened_count": 4,
+      "clicked_count": 2,
+      "converted_count": 1,
+      "failed_count": 0
+    },
+    {
+      "name": "New Shoppers: Welcome Reward",
+      "segment_name": "New Shoppers",
+      "message_template": "Welcome {{name}}! Enjoy ₹50 off your first full-size roast order at Coffee House.",
+      "channel": "email",
+      "status": "scheduled",
+      "sent_count": 7,
+      "delivered_count": 7,
+      "opened_count": 5,
+      "clicked_count": 2,
+      "converted_count": 1,
+      "failed_count": 0
+    }
+  ]
+}
