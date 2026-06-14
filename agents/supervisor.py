@@ -79,7 +79,7 @@ def route_intent(state: SupervisorState) -> SupervisorState:
 
 def run_specialist(state: SupervisorState) -> SupervisorState:
     agent_text = state["next_agent"]
-    agent_names = normalize_agent_names(agent_text)
+    agent_names = normalize_agent_names(agent_text)[:1]
     outputs = []
     for agent_name in agent_names:
         agent, persona, _ = AGENTS[agent_name]
