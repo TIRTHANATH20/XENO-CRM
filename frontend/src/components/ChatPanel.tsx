@@ -122,9 +122,7 @@ export function ChatPanel({
     try {
       const raw =
         window.sessionStorage.getItem(STORAGE_KEY) ||
-        window.sessionStorage.getItem("xeno_ai_assistant_messages") ||
-        window.localStorage.getItem(STORAGE_KEY) ||
-        window.localStorage.getItem("xeno_ai_assistant_messages");
+        window.sessionStorage.getItem("xeno_ai_assistant_messages");
       if (raw) {
         const parsed = JSON.parse(raw) as Message[];
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -159,7 +157,6 @@ export function ChatPanel({
       const json = JSON.stringify(messages);
       window.sessionStorage.setItem(STORAGE_KEY, json);
       try { window.sessionStorage.setItem("xeno_ai_assistant_messages", json); } catch {}
-      try { window.localStorage.setItem(STORAGE_KEY, json); window.localStorage.setItem("xeno_ai_assistant_messages", json); } catch {}
     } catch (e) {
       // ignore storage errors
     }

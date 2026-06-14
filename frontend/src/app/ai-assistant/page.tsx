@@ -42,12 +42,10 @@ export default function AIAssistant() {
   // SSR/client hydration mismatches (initial render uses DEFAULT_ASSISTANT_MESSAGE).
   useEffect(() => {
     try {
-      // read from sessionStorage first, then fallback to localStorage, then legacy keys
+      // read from sessionStorage only
       const raw =
         window.sessionStorage.getItem(STORAGE_KEY) ||
-        window.sessionStorage.getItem("xeno_ai_assistant_messages") ||
-        window.localStorage.getItem(STORAGE_KEY) ||
-        window.localStorage.getItem("xeno_ai_assistant_messages");
+        window.sessionStorage.getItem("xeno_ai_assistant_messages");
       const parsed = raw ? (JSON.parse(raw) as Array<{ role: "user" | "assistant"; content: string; agent?: string }>) : [];
       if (Array.isArray(parsed) && parsed.length > 0) {
         setMessages(parsed);
@@ -59,9 +57,7 @@ export default function AIAssistant() {
     try {
       const storedThread =
         window.sessionStorage.getItem(THREAD_KEY) ||
-        window.sessionStorage.getItem("xeno_ai_assistant_thread_id") ||
-        window.localStorage.getItem(THREAD_KEY) ||
-        window.localStorage.getItem("xeno_ai_assistant_thread_id");
+        window.sessionStorage.getItem("xeno_ai_assistant_thread_id");
       if (storedThread) {
         setThreadId(storedThread);
       } else {
@@ -90,15 +86,13 @@ export default function AIAssistant() {
   useEffect(() => {
     if (!hydrated) return;
     try {
-      // Write to sessionStorage and localStorage as a fallback
+      // Write to sessionStorage
       const json = JSON.stringify(messages);
       window.sessionStorage.setItem(STORAGE_KEY, json);
       try {
         window.sessionStorage.setItem("xeno_ai_assistant_messages", json);
       } catch {}
       try {
-        window.localStorage.setItem(STORAGE_KEY, json);
-        window.localStorage.setItem("xeno_ai_assistant_messages", json);
       } catch {}
     } catch {
       // ignore storage errors
@@ -109,12 +103,10 @@ export default function AIAssistant() {
     if (!threadId) return;
     try {
       window.sessionStorage.setItem(THREAD_KEY, threadId);
-      window.localStorage.setItem(THREAD_KEY, threadId);
       try {
         window.sessionStorage.setItem("xeno_ai_assistant_thread_id", threadId);
       } catch {}
       try {
-        window.localStorage.setItem("xeno_ai_assistant_thread_id", threadId);
       } catch {}
     } catch {
       // ignore storage errors
