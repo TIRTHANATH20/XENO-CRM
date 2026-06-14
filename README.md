@@ -1,49 +1,39 @@
-# Xeno Mini CRM — AI-Native Customer Engagement Platform
+# Xeno CRM Assignment — AI-Native Customer Engagement Platform
 
-An AI-native CRM built for the Xeno Engineering Assignment 2026. Helps D2C brands like Coffee House intelligently reach their shoppers with personalized campaigns.
+This repository contains the Xeno CRM take-home assignment for the FDE Internship Drive 2026.
+It is organized as a full-stack demo product with a clean frontend, Python backend, multi-agent AI service, and simulated channel delivery service.
 
-**Key Features:**
+## What is included
 
-- 💼 **Modern SaaS Interface** — Clean, intuitive UI inspired by Linear, Notion, Stripe
-- 👥 **Customer Profiles** — Digital Twin with LTV, churn risk, engagement insights
-- 📊 **Smart Segmentation** — AI-powered and rule-based audience creation
-- 🚀 **Campaign Management** — Create, personalize, and launch campaigns across channels
-- 📈 **Performance Analytics** — Real-time metrics with AI insights
-- 🤖 **Multi-Agent AI** — Specialist agents for data, segmentation, content, campaigns, insights
-- 📤 **Data Ingestion** — Upload customer and order data via CSV or ZIP
-- 🔍 **Explainable AI** — Every recommendation shows reasoning and evidence
+- `frontend/` — Next.js 16 + React + TypeScript + Tailwind CSS user interface
+- `backend/` — FastAPI backend with SQLite data storage and REST API endpoints
+- `agents/` — AI assistant agent layer used for routing chat prompts and generating segment recommendations
+- `channel-service/` — stubbed delivery simulator for campaigns and receipts
+- `scripts/start-all.sh` — helper script to start all services locally in one command
 
-## Product Structure
+## Key product capabilities
 
-### 5 Core Pages
+- Customer search, profile and digital twin views
+- Segment creation, refresh, and customer membership management
+- Campaign creation and channel dispatch simulation
+- AI assistant support for segmentation and campaign guidance
+- Basic analytics and performance metrics for CRM actions
+- Demo data ingestion with sample customer/order uploads
 
-1. **Dashboard** — Overview metrics (customers, revenue, campaigns) + AI insights
-2. **Customers** — Browse, search, and view individual customer profiles with Digital Twin
-3. **Segments** — Create and manage audience segments with rule-based filtering
-4. **Campaigns** — Create, manage, and monitor campaign performance
-5. **Data Management** — Upload datasets, validate imports, view initial insights
-
-### Technology Stack
-
-- **Frontend:** Next.js 16 + React 18 + TypeScript + Tailwind CSS
-- **Backend:** FastAPI + SQLite + LangGraph (multi-agent)
-- **AI:** LangGraph A2A agents + Ollama (qwen2.5:7b)
-- **Channel Service:** Stub simulator for WhatsApp, SMS, Email, RCS
-
-## Quick Start
+## Local development
 
 ### Prerequisites
 
-- Python 3.10+
 - Node.js 20+
-- [Ollama](https://ollama.com) installed with `qwen2.5:7b`:
-  ```bash
-  ollama pull qwen2.5:7b
-  ```
+- Python 3.10+
+- `npm` or `pnpm`
+- Optional: `ollama` if you want the AI routes to use local models
 
-### Local Development (3 Terminals)
+### Run locally
 
-**Terminal 1 — Backend API (http://localhost:8001)**
+Open four terminals or use the helper script:
+
+**Terminal 1 — Backend**
 
 ```bash
 cd backend
@@ -53,7 +43,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8001
 ```
 
-**Terminal 2 — Channel Service (http://localhost:8000)**
+**Terminal 2 — Channel Service**
 
 ```bash
 cd channel-service
@@ -63,7 +53,17 @@ pip install -r requirements.txt
 python -m app.main
 ```
 
-**Terminal 3 — Frontend (http://localhost:3000)**
+**Terminal 3 — Agents**
+
+```bash
+cd agents
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+PYTHONPATH=. uvicorn api:app --reload --port 8003
+```
+
+**Terminal 4 — Frontend**
 
 ```bash
 cd frontend
@@ -71,267 +71,70 @@ npm install
 npm run dev
 ```
 
-### Quick Demo
-
-1. Open http://localhost:3000
-2. Go to **Data Management** and click **Load Demo Data** to populate sample customers/orders
-3. View metrics on **Dashboard**
-4. Browse **Customers** and view individual profiles with Digital Twin
-5. Create **Segments** by clicking "Create"
-6. Launch **Campaigns** to test message dispatch
-
-## Architecture
-
-```
-Frontend (Next.js)
-  ↓ REST API
-Backend (FastAPI)
-  ├─ Router: /customers, /segments, /campaigns, /analytics, /receipts, /ingest
-  ├─ Services: Analytics, Segmentation, Ingest, Campaigns
-  └─ Database: SQLite (app.db)
-       ↓ calls
-Multi-Agent System (LangGraph)
-  ├─ Supervisor (routes user intent)
-  ├─ Data Agent (queries customer data)
-  ├─ Segmentation Agent (creates segments)
-  ├─ Content Agent (drafts messages)
-  ├─ Campaign Agent (launches campaigns)
-  └─ Insights Agent (analyzes performance)
-       ↓ calls
-Channel Service
-  ├─ Simulates SMS, Email, WhatsApp, RCS
-  └─ Async callbacks to /api/receipts
-```
-
-## Key Design Decisions
-
-### Why SaaS-First Design?
-
-- Clean, professional interface signals production-ready product
-- Modern navigation reduces cognitive load
-- Consistent spacing and typography improve usability
-
-### Why Multi-Page Structure?
-
-- Clearer information architecture
-- Reduced context switching
-- Better focus on each domain (customers, segments, campaigns)
-
-### Why Explainable AI?
-
-- AI recommendations include reason + evidence + calculation
-- Digital Twin metrics expand to show reasoning
-- Users understand _why_ the system made a decision
-
-### Why Data Ingestion?
-
-- Immediate access to real customer/order data
-- Shows system works end-to-end (ingest → segment → campaign)
-- Generates initial AI insights automatically
-
-## Scale Assumptions
-
-- **Scope:** ~10K shoppers, ~100 campaigns
-- **Database:** SQLite sufficient; move to Postgres at 1M+ customers
-- **Campaign Dispatch:** Single-process FastAPI; add job queue (Celery) at 10M+ sends
-- **Analytics:** In-memory aggregation fine; add data warehouse at 100M+ events
-
-## Project Size
-
-After cleanup:
-
-- Total: **1.2 MB** (from 639 MB)
-- Frontend source: 568 KB
-- Backend: 316 KB
-- Agents: 112 KB
-
-## File Structure
-
-```
-xeno/
-├── frontend/              (Next.js + React)
-│   └── src/
-│       ├── app/          (5 pages + layouts)
-│       ├── components/   (Reusable UI)
-│       └── lib/          (API client, utils)
-│
-├── backend/               (FastAPI + SQLite)
-│   └── app/
-│       ├── routers/      (API endpoints)
-│       ├── services/     (Business logic)
-│       ├── models.py     (SQLAlchemy models)
-│       └── database.py   (SQLite setup)
-│
-├── agents/                (Multi-agent AI system)
-│   ├── supervisor.py     (Agent router)
-│   ├── agents/           (5 specialist agents)
-│   └── tools/            (Agent tools)
-│
-└── channel-service/       (Stub channel simulator)
-```
-
-## Testing the Product
-
-### Dashboard
-
-- Metrics update every 15 seconds
-- Shows recent campaigns and top segments
-- AI insights panel summarizes recommendations
-
-### Customers
-
-- Search by name or email
-- View Digital Twin: LTV, churn risk, engagement, preferred channel
-- Each metric is expandable with explanation
-
-### Segments
-
-- Create rules-based segments
-- View segment size and member list
-- Grid layout for quick scanning
-
-### Campaigns
-
-- Create campaigns by selecting segment + channel + message
-- Form validation and error handling
-- Campaign card shows status and basic metrics
-
-### Data Management
-
-- Drop-zone for CSV/ZIP files
-- Load demo data with single click
-- Shows import stats: customers, orders, duplicates, invalid
-
-## Deployment
-
-Recommendations for deployment:
-
-- **Frontend:** Vercel (serverless Next.js)
-- **Backend:** Railway or Render (managed Python)
-- **Database:** PostgreSQL (managed cloud DB)
-- **AI:** Local Ollama or API-based LLM (Claude, GPT-4)
-
-## Next Steps for Production
-
-1. **Authentication & Multi-Tenancy** — Add user auth and workspace isolation
-2. **Real Integrations** — Replace channel stub with actual SMS/Email/WhatsApp providers
-3. **Job Queue** — Add Celery for async campaign dispatch at scale
-4. **Analytics DB** — Move to Postgres/Analytics warehouse for complex queries
-5. **Caching** — Add Redis for frequently accessed customer data
-6. **Monitoring** — Prometheus metrics, error tracking (Sentry)
-
-## Contributing
-
-- Use TypeScript on frontend, Python 3.10+ on backend
-- Follow existing code patterns for consistency
-- Test locally before submitting
-
-## License
-
-Built for Xeno assignment. For interview evaluation only.
-
----
-
-**Questions?** Check backend/README.md and frontend/README.md for detailed setup guides.
-
-uvicorn app.main:app --reload --port 8002
-
-# Terminal 3 — Agents
-
-pip install -r agents/requirements.txt
-PYTHONPATH=. uvicorn agents.api:app --reload --port 8003
-
-# Terminal 4 — Frontend
-
-cd frontend && npm install && npm run dev
-
-````
-
-Or use the helper script:
+Alternatively, run the startup helper:
 
 ```bash
 chmod +x scripts/start-all.sh
 ./scripts/start-all.sh
-````
-
-Open **http://localhost:3000** (or **http://localhost:3001** if 3000 is already in use)
-
-> The channel service is intentionally stubbed and simulates delivery lifecycle events only. It does not send real WhatsApp/SMS/RCS/email messages.
-
-### CLI Agent Console
-
-```bash
-PYTHONPATH=. python -m agents.main
 ```
 
-### Tests and Quality
+### Access the app
 
-- `cd backend && pytest` — run backend unit tests
-- `cd agents && pytest` — run agent service smoke tests
-- `cd frontend && npm install && npm run lint` — validate frontend linting
-- `.gitignore` now excludes generated build artifacts such as `frontend/.next` and Python cache files
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:8001`
+- Channel simulator: `http://localhost:8000`
+- Agent service: `http://localhost:8003`
 
-### Channel service behavior
+## Environment variables
 
-The channel service is a stubbed simulator only. It does not send real WhatsApp, SMS, RCS, or email messages.
+The repository does not store secret environment variables in git.
+The following environment variables are used by the app:
 
-This service simulates delivery lifecycle events and posts callback receipts back to the CRM API, which is the intended behavior for the assignment.
+- `GROQ_API_KEY` — AI/OpenAI key for Groq chat fallback
+- `CRM_API_URL` — backend API URL for local development
+- `NEXT_PUBLIC_CRM_API_URL` — frontend backend API target
+- `NEXT_PUBLIC_AGENTS_API_URL` — frontend agents service target
 
-## API Endpoints
+For local development, add the values to ignored `.env` files in the appropriate subfolders.
 
-### CRM (`:8001`)
+## Deployment notes
 
-- `GET /api/customers` — list shoppers
-- `POST /api/segments` — create segment
-- `POST /api/campaigns` — create campaign
-- `POST /api/campaigns/{id}/send` — dispatch to channel service
-- `POST /api/receipts` — channel callback (delivered/opened/clicked/converted)
-- `GET /api/analytics/dashboard` — performance stats
+This project is designed for deployment as a split frontend/backend app:
 
-### Channel Stub (`:8002`)
+- Frontend can be deployed to Vercel, Netlify, or any static/Next.js host
+- Backend can be deployed to Railway, Render, or any Python host
+- AI/agent service can be deployed separately or run alongside the backend
+- Channel service is a simulator and should run as a separate service if needed
 
-- `POST /api/send` — accept message, simulate async lifecycle
+### Important deployment rule
 
-### Agents (`:8003`)
+**Do not commit secrets to GitHub.**
+Set `GROQ_API_KEY` and other secrets in your deployment provider's environment variable settings.
 
-- `POST /api/chat` — `{ "message": "...", "thread_id": "..." }`
-- `GET /api/agents` — list available specialists
+## Submission checklist
 
-## Demo Flow
+- Ensure `frontend/`, `backend/`, `agents/`, and `channel-service/` are separated clearly
+- Keep local `.env` files out of git
+- Share public GitHub repo links to both frontend and backend code
+- Host the frontend app publicly and share the URL
+- Record a short walkthrough video and transcript
 
-1. Open the AI Assistant tab
-2. Ask: _"Create a segment for shoppers in Mumbai who love coffee"_
-3. Ask: _"Draft a WhatsApp message for the Coffee Enthusiasts segment"_
-4. Ask: _"Launch a campaign with that message"_
-5. Watch the dashboard update as the channel stub sends delivery/engagement callbacks
+## Repo structure
 
-## Deployment
-
-- **Frontend:** Vercel / Netlify — set `NEXT_PUBLIC_CRM_API_URL` and `NEXT_PUBLIC_AGENT_API_URL`
-- **Backend + Channel:** Any Python hosting environment or VM
-- **Agents:** Requires Ollama or swap `ChatOllama` for a cloud LLM in agent files
-
-## Project Structure
-
-```
-├── backend/           # CRM API (FastAPI + SQLAlchemy)
-├── channel-service/   # Stubbed messaging channel
-├── agents/            # Multi-agent LangGraph orchestrator
-│   ├── agents/        # Specialist agent definitions
-│   ├── tools/         # CRM API tools (@tool decorators)
-│   └── supervisor.py  # A2A routing graph
-├── frontend/          # Next.js chat-first UI
-└── scripts/
+```text
+Xeno/
+├── agents/             # AI agent service and tools
+├── backend/            # FastAPI backend and database
+├── channel-service/    # Campaign delivery simulator
+├── frontend/           # Next.js UI and API client
+├── scripts/            # helper scripts
+├── .gitignore
+├── README.md
+├── SUBMISSION_CHECKLIST.md
+└── TESTING_CHECKLIST.md
 ```
 
-## Submission Checklist
+## Notes
 
-- [ ] Host frontend (Vercel)
-- [ ] Host backend + channel (cloud or VM)
-- [ ] Push code to GitHub (separate repos or monorepo)
-- [ ] Record 5–6 min walkthrough video
-- [ ] Submit via form with all links
-
----
-
-Built with AI-native workflow for Xeno FDE Internship 2026.
+This repository has already been cleaned to avoid committing local build artifacts and secrets.
+The local `.env` files and developer artifacts are ignored and will not be pushed.
