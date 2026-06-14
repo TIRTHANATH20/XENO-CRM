@@ -1,6 +1,6 @@
 const CRM_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "http://localhost:8000";
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
-const CRM_READ_TIMEOUT_MS = 2000;
+const CRM_READ_TIMEOUT_MS = 15000;
 const CRM_ACTION_TIMEOUT_MS = 12000;
 
 async function timeoutFetch(input: RequestInfo, init: RequestInit = {}, timeoutMs = CRM_READ_TIMEOUT_MS) {
