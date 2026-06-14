@@ -1,162 +1,103 @@
-"""
-A2A Supervisor — routes marketer intent to the right specialist agent.
-Each specialist is a LangGraph ReAct agent with its own tools and memory.
-"""
-from typing import Annotated, Literal, Optional
+import json
+import os
 import uuid
-
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
+from typing import Dict, List, Any, Sequence
 from langchain_groq import ChatGroq
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.graph import END, START, StateGraph
-from langgraph.graph.message import add_messages
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langgraph.graph import StateGraph, START, END
 from typing_extensions import TypedDict
 
-from agents.campaign_agent import campaign_agent, persona as campaign_persona
-from agents.content_agent import content_agent, persona as content_persona
-from agents.data_agent import data_agent, persona as data_persona
-from agents.insights_agent import insights_agent, persona as insights_persona
-from agents.segmentation_agent import segmentation_agent, persona as segmentation_persona
-from config import settings
+from agents.segmentation_agent import segmentation_node
+from agents.campaign_agent import campaign_node
+from agents.content_agent import content_node
+from agents.insights_agent import insights_node
 
-AGENTS = {
-    "data": (data_agent, data_persona, "Shopper data & CRM state queries"),
-    "segmentation": (segmentation_agent, segmentation_persona, "Audience carving & segments"),
-    "content": (content_agent, content_persona, "Message drafting & personalization"),
-    "campaign": (campaign_agent, campaign_persona, "Campaign creation & launch"),
-    "insights": (insights_agent, insights_persona, "Performance analytics & recommendations"),
-}
+class AgentState(TypedDict):
+    messages: Sequence[BaseMessage]
+    next: str
 
-ROUTER_PROMPT = SystemMessage(
-    content=(
-        "You are the Xeno CRM Supervisor for Coffee House. "
-        "Answer the marketer with a recommended workflow and route the request to one or more specialist agents.\n\n"
-        "Agents:\n"
-        "- data: shopper and CRM state queries\n"
-        "- segmentation: create/find audiences and target audiences\n"
-        "- content: write and personalize message copy\n"
-        "- campaign: create, launch, and optimize campaigns\n"
-        "- insights: analyze performance, explain metrics, and recommend next steps\n\n"
-        "If the request benefits from collaboration, return multiple agent names separated by commas.\n"
-        "Also include a short reasoning summary that explains why each agent is relevant.\n"
-        "Reply with only the agent names and optional brief reasoning in one line, for example:\n"
-        "segmentation, content -- segment inactive customers, then write a WhatsApp draft."
-    )
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+llm = ChatGroq(model="llama-3.3-70b-versatile", api_key=GROQ_API_KEY, temperature=0.1)
+
+system_prompt = """You are the Supervisor for the Xeno CRM AI platform.
+Your job is to route the user's request to the correct specialist agent.
+- For segmenting users, finding audiences, or filtering data: return 'segmentation'.
+- For creating campaigns, setting up broadcasts, or managing schedules: return 'campaign'.
+- For drafting emails, writing SMS copy, or creating message templates: return 'content'.
+- For viewing metrics, checking performance, or analyzing graphs: return 'insights'.
+- If the user is just saying hello, asking a basic question, or testing the system, respond directly and return 'FINISH'.
+
+Respond with ONLY ONE WORD (the agent name or FINISH) unless you are answering directly.
+"""
+
+def supervisor_node(state: AgentState) -> Dict:
+    messages = state["messages"]
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        MessagesPlaceholder(variable_name="messages")
+    ])
+    chain = prompt | llm
+    res = chain.invoke({"messages": messages})
+    
+    content = str(res.content).strip()
+    
+    if content.lower() in ["segmentation", "campaign", "content", "insights"]:
+        return {"next": content.lower()}
+    else:
+        # If the LLM responds directly to a greeting, pass it straight to the UI
+        return {"messages": [AIMessage(content=content, additional_kwargs={"agent": "supervisor"})], "next": "FINISH"}
+
+workflow = StateGraph(AgentState)
+workflow.add_node("supervisor", supervisor_node)
+workflow.add_node("segmentation", segmentation_node)
+workflow.add_node("campaign", campaign_node)
+workflow.add_node("content", content_node)
+workflow.add_node("insights", insights_node)
+
+workflow.add_edge(START, "supervisor")
+
+for node in ["segmentation", "campaign", "content", "insights"]:
+    workflow.add_edge(node, END)
+
+workflow.add_conditional_edges(
+    "supervisor",
+    lambda state: state["next"],
+    {
+        "segmentation": "segmentation",
+        "campaign": "campaign",
+        "content": "content",
+        "insights": "insights",
+        "FINISH": END
+    }
 )
 
+app = workflow.compile()
 
-class SupervisorState(TypedDict):
-    messages: Annotated[list[BaseMessage], add_messages]
-    next_agent: str
-    thread_id: str
-
-
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0, api_key=settings.groq_api_key)
-memory = MemorySaver()
-
-
-def normalize_agent_names(agent_text: str) -> list[str]:
-    candidates = [part.strip().lower().replace("agent", "").strip() for part in agent_text.split(",")]
-    normalized: list[str] = []
-    for candidate in candidates:
-        if not candidate:
-            continue
-        if candidate in AGENTS:
-            normalized.append(candidate)
-            continue
-        # allow multi-word or ranked text to resolve to known agents
-        for key in AGENTS:
-            if key in candidate:
-                normalized.append(key)
-                break
-    if not normalized:
-        normalized = ["data"]
-    return list(dict.fromkeys(normalized))
-
-
-def route_intent(state: SupervisorState) -> SupervisorState:
-    last_human = next((m.content for m in reversed(state["messages"]) if isinstance(m, HumanMessage)), "")
-    response = llm.invoke([ROUTER_PROMPT, HumanMessage(content=last_human)])
-    agent_text = response.content.strip().lower()
-    if "--" in agent_text:
-        agent_text = agent_text.split("--")[0].strip()
-    return {"next_agent": agent_text}
-
-
-def run_specialist(state: SupervisorState) -> SupervisorState:
-    agent_text = state["next_agent"]
-    agent_names = normalize_agent_names(agent_text)
-    outputs = []
-
-    for agent_name in agent_names:
-        agent, persona, _ = AGENTS[agent_name]
-        config = {"configurable": {"thread_id": f"{state['thread_id']}_{agent_name}"}}
-
-        input_messages = [persona]
-        input_messages.extend(state["messages"])
-
-        result = agent.invoke({"messages": input_messages}, config)
-        reply = result["messages"][-1].content
-        outputs.append({"agent": agent_name, "response": reply})
-
-    combined = "\n\n".join([f"[{item['agent'].upper()}] {item['response']}" for item in outputs])
-    return {
-        "messages": [
-            AIMessage(
-                content=combined,
-                additional_kwargs={
-                    "agent": agent_names[0] if len(agent_names) == 1 else "supervisor",
-                    "agents": agent_names,
-                    "routed_by": "supervisor",
-                },
-            )
-        ]
-    }
-
-
-def build_supervisor_graph():
-    graph = StateGraph(SupervisorState)
-    graph.add_node("router", route_intent)
-    graph.add_node("specialist", run_specialist)
-    graph.add_edge(START, "router")
-    graph.add_edge("router", "specialist")
-    graph.add_edge("specialist", END)
-    return graph.compile(checkpointer=memory)
-
-
-supervisor_app = build_supervisor_graph()
-
-
-from typing import Optional
-
-def build_messages_from_context(context: Optional[list[dict]]) -> list[BaseMessage]:
-    if not context:
-        return []
-    messages: list[BaseMessage] = []
-    for item in context:
-        role = item.get("role")
-        content = item.get("content", "")
-        if role == "user":
-            messages.append(HumanMessage(content=content))
-        elif role == "assistant":
-            messages.append(AIMessage(content=content))
-    return messages
-
-
-def invoke_supervisor(user_input: str, thread_id: Optional[str] = None, context: Optional[list[dict]] = None) -> dict:
+def process_chat(message: str, thread_id: str = None, context: Dict = None) -> Dict[str, Any]:
     if not thread_id:
         thread_id = str(uuid.uuid4())
+    
+    inputs = {"messages": [HumanMessage(content=message)]}
     config = {"configurable": {"thread_id": thread_id}}
-    history_messages = build_messages_from_context(context)
-    state_messages = [*history_messages, HumanMessage(content=user_input)]
-    result = supervisor_app.invoke(
-        {"messages": state_messages, "thread_id": thread_id, "next_agent": ""},
-        config,
-    )
-    last = result["messages"][-1]
-    return {
-        "response": last.content,
-        "agent": last.additional_kwargs.get("agent", "unknown"),
-        "agents": last.additional_kwargs.get("agents", []),
-        "thread_id": thread_id,
-    }
+    
+    try:
+        final_state = app.invoke(inputs, config=config)
+        last_message = final_state["messages"][-1]
+        
+        # FIX: Ensure we safely extract data whether it's a string or a complex object
+        content_out = str(last_message.content) if hasattr(last_message, "content") else str(last_message)
+        
+        kwargs = getattr(last_message, "additional_kwargs", {})
+        agent_name = kwargs.get("agent", "supervisor") if isinstance(kwargs, dict) else "supervisor"
+        
+        return {
+            "response": content_out,
+            "agent": agent_name,
+            "thread_id": thread_id
+        }
+    except Exception as e:
+        return {
+            "response": f"Agent error: {str(e)}",
+            "agent": "supervisor"
+        }
