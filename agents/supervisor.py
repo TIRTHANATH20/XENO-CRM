@@ -3,6 +3,7 @@ A2A Supervisor — routes marketer intent to the right specialist agent.
 Each specialist is a LangGraph ReAct agent with its own tools and memory.
 """
 from typing import Annotated, Literal, Optional
+import uuid
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_groq import ChatGroq
@@ -142,7 +143,9 @@ def build_messages_from_context(context: Optional[list[dict]]) -> list[BaseMessa
     return messages
 
 
-def invoke_supervisor(user_input: str, thread_id: str = "xeno_session_1", context: Optional[list[dict]] = None) -> dict:
+def invoke_supervisor(user_input: str, thread_id: Optional[str] = None, context: Optional[list[dict]] = None) -> dict:
+    if not thread_id:
+        thread_id = str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}}
     history_messages = build_messages_from_context(context)
     state_messages = [*history_messages, HumanMessage(content=user_input)]
