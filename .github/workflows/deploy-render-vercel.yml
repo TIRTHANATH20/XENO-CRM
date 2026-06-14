@@ -39,7 +39,6 @@ jobs:
     name: Trigger Render Deploys (optional)
     runs-on: ubuntu-latest
     needs: deploy-frontend
-    if: ${{ secrets.RENDER_API_KEY != '' && (secrets.RENDER_SERVICE_ID_BACKEND != '' || secrets.RENDER_SERVICE_ID_AGENTS != '') }}
     steps:
       - name: Trigger backend deploy on Render
         if: ${{ secrets.RENDER_SERVICE_ID_BACKEND != '' }}
