@@ -13,7 +13,13 @@ export async function POST(req: Request) {
     });
 
     const data = await response.json();
-    return NextResponse.json(data);
+    
+    // Explicitly guarantee a string format for the UI parsing engines
+    return NextResponse.json({
+      response: typeof data.response === 'string' ? data.response : JSON.stringify(data.response),
+      agent: data.agent || "supervisor",
+      thread_id: thread_id
+    });
   } catch (error: any) {
     return NextResponse.json({ 
       response: `Cloud connection route error: ${error.message}`, 
