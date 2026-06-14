@@ -1,0 +1,13 @@
+app = "xeno-channel-service"
+primary_region = "iad"
+
+[env]
+PORT = "8002"
+
+[[services]]
+  internal_port = 8002
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
